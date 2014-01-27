@@ -1,0 +1,15 @@
+name: xmlrpc
+author: Kirill Vergun <pub.dartlang.org@o-nix.me>
+version: 1.0.0
+description: Useful helper classes for the XML-RPC parsing.
+
+dependencies:
+  xml: '>=0.9.5'
+  intl: any
+  crypto: any
+
+dev_dependencies:
+  unittest: any
+
+environment:
+  sdk: '>=1.0.0'
