@@ -1,0 +1,106 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>RpcRequest class / xmlrpc Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="xmlrpc" data-type="RpcRequest">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../xmlrpc.html">xmlrpc</a> &rsaquo; <a href="../xmlrpc/RpcRequest.html">RpcRequest</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>RpcRequest</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>The main class.</p>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+new <strong>RpcRequest</strong>() <a class="anchor-link" href="#"
+              title="Permalink to RpcRequest.RpcRequest">#</a></h4>
+<div class="doc">
+<p>Constructs an empty request.</p>
+</div>
+</div>
+<div class="method"><h4 id="fromText">
+new <strong>RpcRequest.fromText</strong>(String body) <a class="anchor-link" href="#fromText"
+              title="Permalink to RpcRequest.RpcRequest.fromText">#</a></h4>
+<div class="doc">
+<p>Constructs a request from the given text.
+The XML header <code>&lt;?xml?&gt;</code> is optional and ignored.</p>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="method">
+String         <strong>method</strong> <a class="anchor-link"
+            href="#method"
+            title="Permalink to RpcRequest.method">#</a>
+        </h4>
+        <div class="doc">
+<p>The method name.</p>
+<pre><code>&lt;methodCall&gt;
+    &lt;methodName&gt;...&lt;/methodName&gt;
+&lt;/methodCall&gt;
+</code></pre>
+</div>
+</div>
+<div class="field"><h4 id="params">
+List         <strong>params</strong> <a class="anchor-link"
+            href="#params"
+            title="Permalink to RpcRequest.params">#</a>
+        </h4>
+        <div class="doc">
+<p>The parameter list.
+Can be filled with any legal <em>Dart</em> value.</p>
+<p>The conversion table is bidirectional:</p>
+<p><code>string</code>, <code>int</code>, <code>bool</code>, <code>double</code> &lt;-> <code>&lt;type&gt;value&lt;/type&gt;</code></p>
+<p><code>new DateTime()</code> &lt;-> <code>&lt;dateTime.iso8601&gt;19980717T14:08:55&lt;/dateTime.iso8601&gt;</code></p>
+<p><code>null</code> &lt;-> <code>&lt;nil /&gt;</code></p>
+<p><code>new List()</code> &lt;-> <code>&lt;array&gt;&lt;data&gt;&lt;value&gt;typeValue&lt;/value&gt;&lt;/data&gt;&lt;/array&gt;</code></p>
+<p><code>Map&lt;KeyType, ValueType&gt;</code> &lt;-> <code>&lt;struct&gt;&lt;member&gt;&lt;name&gt;keyType.toString()&lt;/name&gt;&lt;value&gt;&lt;string&gt;valueType&lt;/string&gt;&lt;/value&gt;&lt;/member&gt;&lt;/struct&gt;</code></p>
+<p><code>new List&lt;int&gt;()</code> &lt;-> <code>&lt;base64&gt;somedata&lt;/base64&gt;</code></p>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="toString">
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to RpcRequest.toString">#</a></h4>
+<div class="doc">
+<p>Returns a string representation for the request.</p>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          <div>This page was generated at 2014-01-27 18:26:34.443</div>
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        
