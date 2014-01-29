@@ -2,7 +2,22 @@ part of xmlrpc;
 
 
 /**
- * The main class.
+ * Represents all the data that is/should be passed.
+ * The parameter list can be filled with any legal _Dart_ value.
+ *
+ * The conversion table is bidirectional:
+ *
+ * `string`, `int`, `bool`, `double` <-> `<type>value</type>`
+ *
+ * `new DateTime()` <-> `<dateTime.iso8601>19980717T14:08:55</dateTime.iso8601>`
+ *
+ * `null` <-> `<nil />`
+ *
+ * `new List()` <-> `<array><data><value>typeValue</value></data></array>`
+ *
+ * `Map<KeyType, ValueType>` <-> `<struct><member><name>keyType.toString()</name><value><string>valueType</string></value></member></struct>`
+ *
+ * `new List<int>()` <-> `<base64>somedata</base64>`
  */
 class RpcRequest extends _ParamsIterationSupport {
 	List _params = [];
@@ -24,25 +39,6 @@ class RpcRequest extends _ParamsIterationSupport {
 		methodNode.children.clear();
 		methodNode.addChild(new XmlText(method));
 	}
-
-	/**
-	 * The parameter list.
-	 * Can be filled with any legal _Dart_ value.
-	 *
-	 * The conversion table is bidirectional:
-	 *
-	 * `string`, `int`, `bool`, `double` <-> `<type>value</type>`
-	 *
-	 * `new DateTime()` <-> `<dateTime.iso8601>19980717T14:08:55</dateTime.iso8601>`
-	 *
-	 * `null` <-> `<nil />`
-	 *
-	 * `new List()` <-> `<array><data><value>typeValue</value></data></array>`
-	 *
-	 * `Map<KeyType, ValueType>` <-> `<struct><member><name>keyType.toString()</name><value><string>valueType</string></value></member></struct>`
-	 *
-	 * `new List<int>()` <-> `<base64>somedata</base64>`
-	 */
 
 	@override
 	Iterator<Object> get iterator =>

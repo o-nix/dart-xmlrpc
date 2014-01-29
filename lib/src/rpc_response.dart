@@ -1,9 +1,13 @@
 part of xmlrpc;
 
 /**
- *
+ * Represents an un/successful response.
+ * See [RpcRequest] for the detailed description of parameter's types.
  */
 class RpcResponse extends _ParamsIterationSupport {
+	/**
+	 * The main state of the request.
+	 */
 	bool isSuccess;
 
 	@override
@@ -13,11 +17,18 @@ class RpcResponse extends _ParamsIterationSupport {
 	XmlElement _root;
 	List _params = [];
 
+	/**
+	 * Creates new response from scratch.
+	 * Use [successful] flag for the initial state of the request.
+	 */
 	RpcResponse({bool successful: true}) {
 		isSuccess = successful;
 		_root = new XmlElement(RESPONSE_NODE, elements: [new XmlElement(isSuccess ? PARAMS_NODE : FAULT_NODE)]);
 	}
 
+	/**
+	 * Parses an external response from text.
+	 */
 	RpcResponse.fromText(String body) {
 		_root = XML.parse(body);
 		var resultNode = _getResultNode();
