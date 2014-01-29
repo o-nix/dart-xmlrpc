@@ -1,4 +1,4 @@
-library xmlrpc_test;
+library rpc_param_test;
 
 import 'package:unittest/unittest.dart';
 import 'package:xmlrpc/xmlrpc.dart';

@@ -9,6 +9,7 @@ dependencies:
   xml: '>=0.9.5'
   intl: any
   crypto: any
+  http: any
 
 dev_dependencies:
   unittest: any

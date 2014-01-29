@@ -11,7 +11,10 @@ import 'dart:collection';
 import 'package:intl/intl.dart';
 import 'package:crypto/crypto.dart';
 
-import 'src/Multiconverter.dart';
+import 'src/multiconverter.dart';
+import 'src/constants.dart';
 
-part 'src/RpcRequest.dart';
-part 'src/RpcParam.dart';
+part 'src/rpc_request.dart';
+part 'src/rpc_param.dart';
+part 'src/rpc_response.dart';
+part 'src/params_iterator.dart';

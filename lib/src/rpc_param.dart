@@ -1,16 +1,6 @@
 part of xmlrpc;
 
 class RpcParam {
-	static const _PARAM_NODE = 'param';
-	static const _DATA_NODE = 'data';
-	static const _NAME_NODE = 'name';
-	static const _VALUE_NODE = 'value';
-	static const _ARRAY_NODE = 'array';
-	static const _STRUCT_NODE = 'struct';
-	static const _MEMBER_NODE = 'member';
-	static const _BASE64_NODE = 'base64';
-	static const _ISO_8601_NODE = 'dateTime.iso8601';
-
 	/**
 	 * The date format for the `<dateTime.iso8601 />` tag.
 	 */
@@ -27,10 +17,10 @@ class RpcParam {
 			new XmlElement('double', elements: [new XmlText(value.toString())]),
 
 		DateTime: (DateTime value) =>
-			new XmlElement(_ISO_8601_NODE, elements: [new XmlText(new DateFormat(DATE_FORMAT).format(value))]),
+			new XmlElement(ISO_8601_NODE, elements: [new XmlText(new DateFormat(DATE_FORMAT).format(value))]),
 
 		new List<int>().runtimeType: (List<int> binaryData) =>
-			new XmlElement(_BASE64_NODE, elements: [new XmlText(CryptoUtils.bytesToBase64(binaryData))]),
+			new XmlElement(BASE64_NODE, elements: [new XmlText(CryptoUtils.bytesToBase64(binaryData))]),
 
 		'boolean': (XmlElement elem) =>
 			elem.text == 'true',
@@ -44,7 +34,7 @@ class RpcParam {
 		'double': (XmlElement elem) =>
 			double.parse(elem.text),
 
-		_ISO_8601_NODE: (XmlElement elem) =>
+		ISO_8601_NODE: (XmlElement elem) =>
 			DateTime.parse(elem.text),
 
 		'nil': (XmlElement elem) =>
@@ -70,8 +60,8 @@ class RpcParam {
 			var result = {};
 
 			elem.children.forEach((XmlElement member) {
-				var name = (member.query(_NAME_NODE).single as XmlElement).text;
-				XmlElement valueNode = member.query(_VALUE_NODE).single;
+				var name = (member.query(NAME_NODE).single as XmlElement).text;
+				XmlElement valueNode = member.query(VALUE_NODE).single;
 
 				result[name] = fromXmlElement(valueNode.children.single);
 			});
@@ -86,21 +76,21 @@ class RpcParam {
 			elem.text,
 
 		List: (List list) =>
-			new XmlElement(_ARRAY_NODE, elements: [
-				new XmlElement(_DATA_NODE,
+			new XmlElement(ARRAY_NODE, elements: [
+				new XmlElement(DATA_NODE,
 					elements: list.map((Object item) =>
-						new XmlElement(_VALUE_NODE, elements: [RpcParam.valueToXml(item)])
+						new XmlElement(VALUE_NODE, elements: [RpcParam.valueToXml(item)])
 					)
 				)
 			]),
 
 		Map: (Map map) =>
-			new XmlElement(_STRUCT_NODE, elements: map.keys.map((Object key) =>
-				new XmlElement(_MEMBER_NODE, elements: [
-					new XmlElement(_NAME_NODE, elements: [
+			new XmlElement(STRUCT_NODE, elements: map.keys.map((Object key) =>
+				new XmlElement(MEMBER_NODE, elements: [
+					new XmlElement(NAME_NODE, elements: [
 						new XmlText(key.toString())
 					]),
-					new XmlElement(_VALUE_NODE, elements: [
+					new XmlElement(VALUE_NODE, elements: [
 						RpcParam.valueToXml(map[key])
 					])
 				])
