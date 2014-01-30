@@ -7,9 +7,9 @@ homepage: https://github.com/o-nix/dart-xmlrpc
 
 dependencies:
   xml: '>=0.9.5'
-  intl: any
-  crypto: any
-  http: any
+  intl: '>=0.9.4'
+  crypto: '>=0.9.0'
+  http: '>=0.9.2+3'
 
 dev_dependencies:
   unittest: any
