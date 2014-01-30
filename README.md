@@ -23,4 +23,8 @@ For example a call to some external endpoint:
                 print(response.length);
             });
 
+As you see, these classes acts like a container for the parameters,
+so you can easily iterate over them and/or set the data using list-like
+access style using square brackets.
+
 See the full API documentation [here](http://o-nix.me/dart-xmlrpc/xmlrpc.html).
