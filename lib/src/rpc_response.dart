@@ -61,7 +61,7 @@ class RpcResponse extends _ParamsIterationSupport {
 			var transformedParam = RpcParam.valueToXml(param);
 
 			if (isSuccess)
-				resultNode.addChild(new XmlElement('param', elements: [transformedParam]));
+				resultNode.addChild(new XmlElement('param', elements: [new XmlElement(VALUE_NODE, elements: [transformedParam])]));
 			else
 				resultNode.addChild(new XmlElement('value', elements: [transformedParam]));
 		});

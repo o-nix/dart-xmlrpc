@@ -22,6 +22,30 @@ void main() {
 		expect(resp.isSuccess, equals(true));
 		expect(resp, hasLength(1));
 		expect(resp[0], new isInstanceOf<String>());
+
+		resp = new RpcResponse.fromText('''
+			<methodResponse>
+				<params>
+					<param>
+						<value>
+							<array>
+								<data>
+									<value>
+										<string>abcd</string>
+									</value>
+								</data>
+							</array>
+						</value>
+					</param>
+				</params>
+			</methodResponse>
+		''');
+
+		expect(resp.isSuccess, equals(true));
+		expect(resp, hasLength(1));
+		expect(resp[0], new isInstanceOf<List>());
+		expect(resp[0][0], new isInstanceOf<String>());
+		expect(resp[0][0], equals('abcd'));
 	});
 
 	test('From text failure', () {
@@ -55,7 +79,7 @@ void main() {
 		resp.addParam(1);
 		resp.addParam('hello');
 
-		expect(resp.toString(), equals('<?xml version="1.0"?>\n<methodResponse>\n   <params>\n      <param>\n         <int>1</int>\n      </param>\n      <param>\n         <string>hello</string>\n      </param>\n   </params>\n</methodResponse>'));
+		expect(resp.toString(), equals('<?xml version="1.0"?>\n<methodResponse>\n   <params>\n      <param>\n         <value>\n            <int>1</int>\n         </value>\n      </param>\n      <param>\n         <value>\n            <string>hello</string>\n         </value>\n      </param>\n   </params>\n</methodResponse>'));
 	});
 
 	test('From scratch failure', () {
