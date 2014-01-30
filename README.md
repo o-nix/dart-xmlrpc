@@ -17,13 +17,14 @@ request.method = 'echo';
 request.addParam(true);
 request.addParam('an argument');
 
-http.post('http://example.com', body: request.toString())
-        .then((httpResponse) {
-            var response = new RpcResponse.fromText(httpResponse.body);
-
-            print(response.isSuccess);
-            print(response.length);
-        });
+http
+    .post('http://example.com', body: request.toString())
+    .then((httpResponse) {
+        var response = new RpcResponse.fromText(httpResponse.body);
+    
+        print(response.isSuccess);
+        print(response.length);
+    });
 ```
 
 As you see, these classes acts like a container for the parameters,
