@@ -19,6 +19,10 @@ class _ParamsIterationSupport extends IterableBase<Object> {
 		_params = params;
 	}
 
+	void clear() {
+		_params.clear();
+	}
+
 	@override
 	int get length =>
 		_params.length;
