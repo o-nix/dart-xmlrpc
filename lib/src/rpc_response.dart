@@ -21,9 +21,8 @@ class RpcResponse extends _ParamsIterationSupport {
 	 * Creates new response from scratch.
 	 * Use [successful] flag for the initial state of the request.
 	 */
-	RpcResponse({bool successful: true}) {
-		isSuccess = successful;
-		_root = new XmlElement(RESPONSE_NODE, elements: [new XmlElement(isSuccess ? PARAMS_NODE : FAULT_NODE)]);
+	RpcResponse({this.isSuccess: true}) {
+		_root = _makeRoot();
 	}
 
 	/**
@@ -50,12 +49,15 @@ class RpcResponse extends _ParamsIterationSupport {
 
 	@override
 	String toString() {
+		_root = _makeRoot();
+
 		var resultNode = _getResultNode();
 
 		resultNode.children.clear();
 
-		if (!isSuccess)
+		if (!isSuccess) {
 			assert(_params.length < 2);
+		}
 
 		_params.forEach((Object param) {
 			var transformedParam = RpcParam.valueToXml(param);
@@ -68,6 +70,9 @@ class RpcResponse extends _ParamsIterationSupport {
 
 		return RpcRequest._toStringInternal(XML_HEADER + _root.toString());
 	}
+
+	XmlElement _makeRoot() =>
+		new XmlElement(RESPONSE_NODE, elements: [new XmlElement(isSuccess ? PARAMS_NODE : FAULT_NODE)]);
 
 	XmlElement _getResultNode() =>
 		_root.children.single;

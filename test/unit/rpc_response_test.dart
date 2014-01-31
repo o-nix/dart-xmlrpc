@@ -83,10 +83,33 @@ void main() {
 	});
 
 	test('From scratch failure', () {
-		var resp = new RpcResponse(successful: false);
+		var resp = new RpcResponse(isSuccess: false);
 
+		resp.isSuccess = false;
 		resp.addParam([2, 'hello2']);
 
 		expect(resp.toString(), equals('<?xml version="1.0"?>\n<methodResponse>\n   <fault>\n      <value>\n         <array>\n            <data>\n               <value>\n                  <int>2</int>\n               </value>\n               <value>\n                  <string>hello2</string>\n               </value>\n            </data>\n         </array>\n      </value>\n   </fault>\n</methodResponse>'));
+
+		resp = new RpcResponse();
+
+		resp.isSuccess = false;
+		resp.addParam({'hello3': 'there'});
+
+		expect(resp.toString(), equals('''<?xml version="1.0"?>
+<methodResponse>
+   <fault>
+      <value>
+         <struct>
+            <member>
+               <name>hello3</name>
+               <value>
+                  <string>there</string>
+               </value>
+            </member>
+         </struct>
+      </value>
+   </fault>
+</methodResponse>'''
+		));
 	});
 }
