@@ -1,6 +1,6 @@
 name: xmlrpc
 author: Kirill Vergun <pub.dartlang.org@o-nix.me>
-version: 1.0.1
+version: 1.0.2
 description: Useful helper classes for the XML-RPC parsing.
 documentation: http://o-nix.me/dart-xmlrpc/xmlrpc.html
 homepage: https://github.com/o-nix/dart-xmlrpc
