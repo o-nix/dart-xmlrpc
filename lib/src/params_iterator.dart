@@ -1,7 +1,7 @@
 part of xmlrpc;
 
 
-class _ParamsIterationSupport extends IterableBase<Object> {
+abstract class _ParamsIterationSupport extends IterableBase<Object> {
 	List _params;
 
 	Object operator [](int index) =>
