@@ -37,16 +37,15 @@ See <a class="crossref" href="../xmlrpc/RpcRequest.html">RpcRequest</a> for the 
 </div>
 <h3>Extends</h3>
 <p>
-<span class="type-box"><span class="icon-class"></span><a href="../dart_collection/IterableBase.html">IterableBase&lt;Object&gt;</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><a href="../xmlrpc/_ParamsIterationSupport.html">_ParamsIterationSupport</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>RpcResponse</strong></span></p>
+<span class="type-box"><span class="icon-class"></span>IterableBase&lt;Object&gt;</span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><a href="../xmlrpc/_ParamsIterationSupport.html">_ParamsIterationSupport</a></span>&nbsp;&gt;&nbsp;<span class="type-box"><span class="icon-class"></span><strong>RpcResponse</strong></span></p>
 <div>
 <h3>Constructors</h3>
 <div class="method"><h4 id="">
-new <strong>RpcResponse</strong>({bool successful: true}) <a class="anchor-link" href="#"
+new <strong>RpcResponse</strong>({bool isSuccess: true}) <a class="anchor-link" href="#"
               title="Permalink to RpcResponse.RpcResponse">#</a></h4>
 <div class="doc">
 <p>Creates new response from scratch.
-Use 
-<span class="param">successful</span> flag for the initial state of the request.</p>
+Use <code>successful</code> flag for the initial state of the request.</p>
 </div>
 </div>
 <div class="method"><h4 id="fromText">
@@ -67,7 +66,7 @@ final <a href="../xmlrpc/RpcResponse.html">E</a>         <strong>first</strong> 
         <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
 <p>Returns the first element.</p>
-<p>If <code>this</code> is empty throws a <a class="crossref" href="../dart_core/StateError.html">StateError</a>. Otherwise this method is
+<p>If <code>this</code> is empty throws a <code>StateError</code>. Otherwise this method is
 equivalent to <code>this.elementAt(0)</code></p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
@@ -122,7 +121,7 @@ final <a href="../xmlrpc/RpcResponse.html">E</a>         <strong>last</strong> <
         <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
 <p>Returns the last element.</p>
-<p>If <code>this</code> is empty throws a <a class="crossref" href="../dart_core/StateError.html">StateError</a>.</p>
+<p>If <code>this</code> is empty throws a <code>StateError</code>.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
 </div>
@@ -147,7 +146,7 @@ final <a href="../xmlrpc/RpcResponse.html">E</a>         <strong>single</strong>
         <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
 <p>Returns the single element in <code>this</code>.</p>
-<p>If <code>this</code> is empty or has more than one element throws a <a class="crossref" href="../dart_core/StateError.html">StateError</a>.</p>
+<p>If <code>this</code> is empty or has more than one element throws a <code>StateError</code>.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
 </div>
@@ -185,6 +184,12 @@ predicate <code>test</code>. Returns false otherwise.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
 </div>
+<div class="method inherited"><h4 id="clear">
+void <strong>clear</strong>() <a class="anchor-link" href="#clear"
+              title="Permalink to RpcResponse.clear">#</a></h4>
+<div class="inherited-from">inherited from <a href="../xmlrpc/_ParamsIterationSupport.html">_ParamsIterationSupport</a> </div><div class="doc">
+</div>
+</div>
 <div class="method inherited"><h4 id="contains">
 bool <strong>contains</strong>(Object element) <a class="anchor-link" href="#contains"
               title="Permalink to RpcResponse.contains">#</a></h4>
@@ -203,7 +208,7 @@ bool <strong>contains</strong>(Object element) <a class="anchor-link" href="#con
 <p>Returns the 
 <span class="param">index</span>th element.</p>
 <p>If <code>this</code> has fewer than 
-<span class="param">index</span> elements throws a <a class="crossref" href="../dart_core/RangeError.html">RangeError</a>.</p>
+<span class="param">index</span> elements throws a <code>RangeError</code>.</p>
 <p>Note: if <code>this</code> does not have a deterministic iteration order then the
 function may simply return any element without any iteration if there are
 at least 
@@ -226,11 +231,11 @@ Iterable <strong>expand</strong>(Iterable f(<a href="../xmlrpc/RpcResponse.html"
               title="Permalink to RpcResponse.expand">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Expands each element of this <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> into zero or more elements.</p>
+<p>Expands each element of this <code>Iterable</code> into zero or more elements.</p>
 <p>The resulting Iterable runs through the elements returned
 by 
 <span class="param">f</span> for each element of this, in order.</p>
-<p>The returned <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> is lazy, and calls 
+<p>The returned <code>Iterable</code> is lazy, and calls 
 <span class="param">f</span> for each element
 of this every time it's iterated.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
@@ -246,7 +251,7 @@ dynamic <strong>firstWhere</strong>(bool test(<a href="../xmlrpc/RpcResponse.htm
 <p>If none matches, the result of invoking the 
 <span class="param">orElse</span> function is
 returned. By default, when 
-<span class="param">orElse</span> is <code>null</code>, a <a class="crossref" href="../dart_core/StateError.html">StateError</a> is
+<span class="param">orElse</span> is <code>null</code>, a <code>StateError</code> is
 thrown.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
@@ -284,8 +289,8 @@ String <strong>join</strong>([String separator = ""]) <a class="anchor-link" hre
               title="Permalink to RpcResponse.join">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Converts each element to a <a class="crossref" href="../dart_core/String.html">String</a> and concatenates the strings.</p>
-<p>Converts each element to a <a class="crossref" href="../dart_core/String.html">String</a> by calling <a class="crossref" href="../dart_core/Object.html#toString">Object.toString</a> on it.
+<p>Converts each element to a <code>String</code> and concatenates the strings.</p>
+<p>Converts each element to a <code>String</code> by calling <code>Object.toString</code> on it.
 Then concatenates the strings, optionally separated by the 
 <span class="param">separator</span>
 string.</p>
@@ -302,7 +307,7 @@ dynamic <strong>lastWhere</strong>(bool test(<a href="../xmlrpc/RpcResponse.html
 <p>If none matches, the result of invoking the 
 <span class="param">orElse</span> function is
 returned. By default, when 
-<span class="param">orElse</span> is <code>null</code>, a <a class="crossref" href="../dart_core/StateError.html">StateError</a> is
+<span class="param">orElse</span> is <code>null</code>, a <code>StateError</code> is
 thrown.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
@@ -312,13 +317,13 @@ Iterable <strong>map</strong>(f(<a href="../xmlrpc/RpcResponse.html">E</a> eleme
               title="Permalink to RpcResponse.map">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Returns a lazy <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> where each element <code>e</code> of <code>this</code> is replaced
+<p>Returns a lazy <code>Iterable</code> where each element <code>e</code> of <code>this</code> is replaced
 by the result of <code>f(e)</code>.</p>
 <p>This method returns a view of the mapped elements. As long as the
-returned <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> is not iterated over, the supplied function 
+returned <code>Iterable</code> is not iterated over, the supplied function 
 <span class="param">f</span> will
 not be invoked. The transformed elements will not be cached. Iterating
-multiple times over the the returned <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> will invoke the supplied
+multiple times over the the returned <code>Iterable</code> will invoke the supplied
 function 
 <span class="param">f</span> multiple times on the same element.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
@@ -350,7 +355,7 @@ void <strong>setParams</strong>(List params) <a class="anchor-link" href="#setPa
 <div class="inherited">
 <p>Returns the single element that satisfies 
 <span class="param">test</span>. If no or more than one
-element match then a <a class="crossref" href="../dart_core/StateError.html">StateError</a> is thrown.</p>
+element match then a <code>StateError</code> is thrown.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
 </div>
@@ -394,9 +399,9 @@ Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; <strong>take</strong>
               title="Permalink to RpcResponse.take">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Returns an <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> with at most 
+<p>Returns an <code>Iterable</code> with at most 
 <span class="param">n</span> elements.</p>
-<p>The returned <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> may contain fewer than 
+<p>The returned <code>Iterable</code> may contain fewer than 
 <span class="param">n</span> elements, if <code>this</code>
 contains fewer than 
 <span class="param">n</span> elements.</p>
@@ -426,7 +431,7 @@ List&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; <strong>toList</strong>({
               title="Permalink to RpcResponse.toList">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Creates a <a class="crossref" href="../dart_core/List.html">List</a> containing the elements of this <a class="crossref" href="../dart_core/Iterable.html">Iterable</a>.</p>
+<p>Creates a <code>List</code> containing the elements of this <code>Iterable</code>.</p>
 <p>The elements are in iteration order. The list is fixed-length
 if 
 <span class="param">growable</span> is false.</p>
@@ -438,7 +443,7 @@ Set&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; <strong>toSet</strong>() <
               title="Permalink to RpcResponse.toSet">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Creates a <a class="crossref" href="../dart_core/Set.html">Set</a> containing the elements of this <a class="crossref" href="../dart_core/Iterable.html">Iterable</a>.</p>
+<p>Creates a <code>Set</code> containing the elements of this <code>Iterable</code>.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
 </div>
@@ -465,12 +470,12 @@ Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; <strong>where</strong
               title="Permalink to RpcResponse.where">#</a></h4>
 <div class="inherited-from">inherited from IterableBase </div><div class="doc">
 <div class="inherited">
-<p>Returns a lazy <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> with all elements that satisfy the
+<p>Returns a lazy <code>Iterable</code> with all elements that satisfy the
 predicate <code>test</code>.</p>
 <p>This method returns a view of the mapped elements. As long as the
-returned <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> is not iterated over, the supplied function <code>test</code> will
+returned <code>Iterable</code> is not iterated over, the supplied function <code>test</code> will
 not be invoked. Iterating will not cache results, and thus iterating
-multiple times over the returned <a class="crossref" href="../dart_core/Iterable.html">Iterable</a> will invoke the supplied
+multiple times over the returned <code>Iterable</code> will invoke the supplied
 function <code>test</code> multiple times on the same element.</p>
 <div class="docs-inherited-from">docs inherited from Iterable&lt;<a href="../xmlrpc/RpcResponse.html">E</a>&gt; </div></div>
 </div>
@@ -480,7 +485,7 @@ function <code>test</code> multiple times on the same element.</p>
         <div class="clear"></div>
         </div>
         <div class="footer">
-          <div>This page was generated at 2014-01-30 10:52:09.199</div>
+          <div>This page was generated at 2014-02-03 14:18:58.350</div>
         </div>
         <script async src="../client-live-nav.js"></script>
         </body></html>
