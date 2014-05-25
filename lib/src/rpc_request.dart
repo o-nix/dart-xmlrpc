@@ -33,7 +33,11 @@ class RpcRequest {
   /**
    * Constructs an empty request.
    */
-  RpcRequest([String this.method, List this.params]);
+  RpcRequest([String this.method, List this.params]) {
+    if (this.params == null) {
+      this.params = new List();
+    }
+  }
 
   /**
    * Constructs a request from the given text.
