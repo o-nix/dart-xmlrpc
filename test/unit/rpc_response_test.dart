@@ -2,12 +2,11 @@ library rpc_response_test;
 
 import 'package:unittest/unittest.dart';
 import 'package:xmlrpc/xmlrpc.dart';
-import 'package:xml/xml.dart';
 
 
 void main() {
 	test('From text success', () {
-		var resp = new RpcResponse.fromText('''
+		var resp = new RpcResponse.fromXmlString('''
 			<methodResponse>
 				<params>
 					<param>
@@ -20,10 +19,10 @@ void main() {
 		''');
 
 		expect(resp.isSuccess, equals(true));
-		expect(resp, hasLength(1));
-		expect(resp[0], new isInstanceOf<String>());
+		expect(resp.params, hasLength(1));
+		expect(resp.params[0], new isInstanceOf<String>());
 
-		resp = new RpcResponse.fromText('''
+		resp = new RpcResponse.fromXmlString('''
 			<methodResponse>
 				<params>
 					<param>
@@ -42,14 +41,14 @@ void main() {
 		''');
 
 		expect(resp.isSuccess, equals(true));
-		expect(resp, hasLength(1));
-		expect(resp[0], new isInstanceOf<List>());
-		expect(resp[0][0], new isInstanceOf<String>());
-		expect(resp[0][0], equals('abcd'));
+		expect(resp.params, hasLength(1));
+		expect(resp.params[0], new isInstanceOf<List>());
+		expect(resp.params[0][0], new isInstanceOf<String>());
+		expect(resp.params[0][0], equals('abcd'));
 	});
 
 	test('From text failure', () {
-		var resp = new RpcResponse.fromText('''
+		var resp = new RpcResponse.fromXmlString('''
 			<methodResponse>
 				<fault>
 					<value>
@@ -69,47 +68,32 @@ void main() {
 		''');
 
 		expect(resp.isSuccess, equals(false));
-		expect(resp, hasLength(1));
-		expect(resp[0], new isInstanceOf<Map>());
+		expect(resp.params, hasLength(1));
+		expect(resp.params[0], new isInstanceOf<Map>());
 	});
 
 	test('From scratch success', () {
 		var resp = new RpcResponse();
 
-		resp.addParam(1);
-		resp.addParam('hello');
+		resp.params.add(1);
+		resp.params.add('hello');
 
-		expect(resp.toString(), equals('<?xml version="1.0"?>\n<methodResponse>\n   <params>\n      <param>\n         <value>\n            <int>1</int>\n         </value>\n      </param>\n      <param>\n         <value>\n            <string>hello</string>\n         </value>\n      </param>\n   </params>\n</methodResponse>'));
+		expect(resp.toString(), equals('<?xml version="1.0"?><methodResponse><params><param><value><int>1</int></value></param><param><value><string>hello</string></value></param></params></methodResponse>'));
 	});
 
 	test('From scratch failure', () {
-		var resp = new RpcResponse(isSuccess: false);
+		var resp = new RpcResponse(false);
 
 		resp.isSuccess = false;
-		resp.addParam([2, 'hello2']);
+		resp.params.add([2, 'hello2']);
 
-		expect(resp.toString(), equals('<?xml version="1.0"?>\n<methodResponse>\n   <fault>\n      <value>\n         <array>\n            <data>\n               <value>\n                  <int>2</int>\n               </value>\n               <value>\n                  <string>hello2</string>\n               </value>\n            </data>\n         </array>\n      </value>\n   </fault>\n</methodResponse>'));
+		expect(resp.toString(), equals('<?xml version="1.0"?><methodResponse><fault><value><array><data><value><int>2</int></value><value><string>hello2</string></value></data></array></value></fault></methodResponse>'));
 
 		resp = new RpcResponse();
 
 		resp.isSuccess = false;
-		resp.addParam({'hello3': 'there'});
+		resp.params.add({'hello3': 'there'});
 
-		expect(resp.toString(), equals('''<?xml version="1.0"?>
-<methodResponse>
-   <fault>
-      <value>
-         <struct>
-            <member>
-               <name>hello3</name>
-               <value>
-                  <string>there</string>
-               </value>
-            </member>
-         </struct>
-      </value>
-   </fault>
-</methodResponse>'''
-		));
+		expect(resp.toString(), equals('<?xml version="1.0"?><methodResponse><fault><value><struct><member><name>hello3</name><value><string>there</string></value></member></struct></value></fault></methodResponse>'));
 	});
 }

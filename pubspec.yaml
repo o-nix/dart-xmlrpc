@@ -1,18 +1,15 @@
 name: xmlrpc
-author: Kirill Vergun <pub.dartlang.org@o-nix.me>
-version: 1.0.3
+version: 2.0.0
+author: Ariel Barabas <ariel.baras@gmail.com>
 description: Useful helper classes for the XML-RPC parsing.
-documentation: http://o-nix.me/dart-xmlrpc/xmlrpc.html
-homepage: https://github.com/o-nix/dart-xmlrpc
-
-dependencies:
-  xml: '>=0.9.5'
-  intl: '>=0.9.4'
-  crypto: '>=0.9.0'
-  http: '>=0.9.2+3'
-
-dev_dependencies:
-  unittest: any
-
+homepage: https://github.com/abarabas/dart-xmlrpc
 environment:
   sdk: '>=1.0.0'
+documentation: https://github.com/abarabas/dart-xmlrpc
+dependencies:
+  crypto: '>=0.9.0 <1.0.0'
+  intl: '>=0.9.4 <1.0.0'
+  xml: '>=2.1.0 <3.0.0'
+dev_dependencies:
+  http: '>=0.9.2+3 <1.0.0'
+  unittest: any

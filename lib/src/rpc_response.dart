@@ -4,76 +4,76 @@ part of xmlrpc;
  * Represents an un/successful response.
  * See [RpcRequest] for the detailed description of parameter's types.
  */
-class RpcResponse extends _ParamsIterationSupport {
+class RpcResponse {
 	/**
 	 * The main state of the request.
 	 */
 	bool isSuccess;
 
-	@override
-	Iterator<Object> get iterator =>
-		new _ParamsIterator(this);
-
-	XmlElement _root;
-	List _params = [];
+	List params = [];
 
 	/**
 	 * Creates new response from scratch.
 	 * Use [successful] flag for the initial state of the request.
 	 */
-	RpcResponse({this.isSuccess: true}) {
-		_root = _makeRoot();
+	RpcResponse([this.isSuccess=true]);
+
+	factory RpcResponse.fault(int faultCode, String faultString) {
+	  new RpcResponse(false)
+	     ..params.add({
+    	    faultCode: faultCode,
+    	    faultString: faultString
+    	  });
 	}
 
 	/**
 	 * Parses an external response from text.
 	 */
-	RpcResponse.fromText(String body) {
-		_root = XML.parse(body);
-		var resultNode = _getResultNode();
+	factory RpcResponse.fromXmlString(String body) {
+		var resultNode = _parse(body).children.single;
+    var res = new RpcResponse(resultNode.name.local != FAULT_NODE);
 
-		isSuccess = resultNode.name != FAULT_NODE;
-
-		if (isSuccess) {
-			resultNode.children.forEach((XmlElement paramNode) {
-				_params.add(RpcParam.fromParamNode(paramNode));
-			});
+		if (res.isSuccess) {
+			res.params.addAll(resultNode.children.map(RpcParam.fromParamNode));
 		}
 		else {
 			XmlElement valueNode = resultNode.children.single;
 			XmlElement typeNode = valueNode.children.single;
 
-			_params.add(RpcParam.fromXmlElement(typeNode));
+			res.params.add(RpcParam.fromXmlElement(typeNode));
 		}
+		return res;
 	}
 
 	@override
 	String toString() {
-		_root = _makeRoot();
+	  List<XmlElement> content = [];
 
-		var resultNode = _getResultNode();
+    if (!isSuccess) {
+      assert(params.length < 2);
+    }
 
-		resultNode.children.clear();
+    if (params.length > 0) {
+      Iterable<XmlElement> res = params.map((param) {
+        var transformedParam = RpcParam.valueToXml(param);
 
-		if (!isSuccess) {
-			assert(_params.length < 2);
-		}
+        if (isSuccess) {
+          return new XmlElement(new XmlName('param'), [], [
+            new XmlElement(new XmlName('value'), [], [transformedParam])
+          ]);
+        } else {
+          return new XmlElement(new XmlName('value'), [], [transformedParam]);
+        }
+      });
 
-		_params.forEach((Object param) {
-			var transformedParam = RpcParam.valueToXml(param);
+      content.add(
+          new XmlElement(new XmlName(isSuccess ? 'params' : 'fault'), [], res)
+      );
+    }
 
-			if (isSuccess)
-				resultNode.addChild(new XmlElement('param', elements: [new XmlElement(VALUE_NODE, elements: [transformedParam])]));
-			else
-				resultNode.addChild(new XmlElement('value', elements: [transformedParam]));
-		});
-
-		return RpcRequest._toStringInternal(XML_HEADER + _root.toString());
+	  return new XmlDocument([
+      new XmlProcessing('xml', XML_HEADER),
+      new XmlElement(new XmlName('methodResponse'), [], content)
+    ]).toString();
 	}
-
-	XmlElement _makeRoot() =>
-		new XmlElement(RESPONSE_NODE, elements: [new XmlElement(isSuccess ? PARAMS_NODE : FAULT_NODE)]);
-
-	XmlElement _getResultNode() =>
-		_root.children.single;
 }

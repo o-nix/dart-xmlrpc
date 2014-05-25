@@ -1,6 +1,6 @@
 # XML-RPC library for Dart
 
-[![Build Status](https://drone.io/github.com/o-nix/dart-xmlrpc/status.png)](https://drone.io/github.com/o-nix/dart-xmlrpc/latest)
+[![Build Status](https://drone.io/github.com/abarabas/dart-xmlrpc/status.png)](https://drone.io/github.com/abarabas/dart-xmlrpc/latest)
 
 This library contains simple wrapper classes for responses and requests sent via [XML-RPC](http://en.wikipedia.org/wiki/XML-RPC) protocol.
 
@@ -14,8 +14,8 @@ import 'package:xmlrpc/xmlrpc.dart';
 var request = new RpcRequest();
 
 request.method = 'echo';
-request.addParam(true);
-request.addParam('an argument');
+request.params.add(true);
+request.params.add('an argument');
 
 http
     .post('http://example.com', body: request.toString())
@@ -23,7 +23,7 @@ http
         var response = new RpcResponse.fromText(httpResponse.body);
     
         print(response.isSuccess);
-        print(response.length);
+        print(response.params.length);
     });
 ```
 

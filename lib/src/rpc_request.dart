@@ -1,4 +1,11 @@
 part of xmlrpc;
+/**
+ * The method name.
+*
+ *     <methodCall>
+ *         <methodName>...</methodName>
+ *     </methodCall>
+ */
 
 
 /**
@@ -19,85 +26,59 @@ part of xmlrpc;
  *
  * `new List<int>()` <-> `<base64>somedata</base64>`
  */
-class RpcRequest extends _ParamsIterationSupport {
-	List _params = [];
-	XmlElement _root;
+class RpcRequest {
+  List params = [];
+  String method;
 
-	/**
-	* The method name.
-	*
-	*     <methodCall>
-	*         <methodName>...</methodName>
-	*     </methodCall>
-	*/
-	String get method =>
-		_getMethodNode().text;
+  /**
+   * Constructs an empty request.
+   */
+  RpcRequest([String this.method, List this.params]);
 
-	void set method(String method) {
-		var methodNode = _getMethodNode();
+  /**
+   * Constructs a request from the given text.
+   * The XML header `<?xml?>` is optional and ignored.
+   */
+  factory RpcRequest.fromXmlString(String body) {
+    XmlElement root = _parse(body);
 
-		methodNode.children.clear();
-		methodNode.addChild(new XmlText(method));
-	}
+    assert(root.name.local == METHOD_CALL_NODE);
 
-	@override
-	Iterator<Object> get iterator =>
-		new _ParamsIterator(this);
+    var req = new RpcRequest(_getMethodNode(root).children[0].text);
+    req.params
+          ..clear()
+          ..addAll(_getParamsNode(root).children.map(RpcParam.fromParamNode));
+    return req;
+  }
 
-	/**
-	* Constructs an empty request.
-	*/
-	RpcRequest({String method, List params}) {
-		_root = new XmlElement(METHOD_CALL_NODE, elements: [
-			new XmlElement(METHOD_NAME_NODE),
-			new XmlElement(PARAMS_NODE)
-		]);
+  /**
+   * Returns a string representation for the request.
+   */
+  @override
+  String toString() {
+    return new XmlDocument([
+      new XmlProcessing('xml', XML_HEADER),
+      new XmlElement(new XmlName(METHOD_CALL_NODE), [], [
+        new XmlElement(new XmlName(METHOD_NAME_NODE), [], [
+          new XmlText(method)
+        ]),
+        new XmlElement(new XmlName(PARAMS_NODE), [], params
+            .map(RpcParam.valueToXml).map((XmlElement elem) {
+                return new XmlElement(new XmlName(PARAM_NODE), [], [
+                  new XmlElement(new XmlName(VALUE_NODE), [], [elem])
+                ]);
+            })
+        )
+      ])
+    ]).toString();
+  }
 
-		if (method != null)
-			this.method = method;
+  static String _toStringInternal(String original) =>
+      original.replaceAll('\r', '\n');
 
-		if (params != null)
-			this._params = params;
-	}
+  static XmlElement _getMethodNode(XmlElement root) =>
+      root.findElements(METHOD_NAME_NODE).single;
 
-	/**
-	 * Constructs a request from the given text.
-	 * The XML header `<?xml?>` is optional and ignored.
-	 */
-	RpcRequest.fromText(String body) {
-		_root = XML.parse(body);
-
-		_getParamsNode().children.forEach((XmlElement elem) {
-			var value = RpcParam.fromParamNode(elem);
-
-			_params.add(value);
-		});
-	}
-
-	/**
-	* Returns a string representation for the request.
-	*/
-	@override
-	String toString() {
-		var paramsNode = _getParamsNode();
-
-		paramsNode.children.clear();
-
-		_params.forEach((param) {
-			paramsNode.addChild(new XmlElement(PARAM_NODE, elements: [
-				new XmlElement(VALUE_NODE, elements: [RpcParam.valueToXml(param)])
-			]));
-		});
-
-		return _toStringInternal(XML_HEADER + _root.toString());
-	}
-
-	static String _toStringInternal(String original) =>
-		original.replaceAll('\r', '\n');
-
-	XmlElement _getMethodNode() =>
-		_root.query(METHOD_NAME_NODE).single;
-
-	XmlElement _getParamsNode() =>
-		_root.query(PARAMS_NODE).single;
+  static XmlElement _getParamsNode(XmlElement root) =>
+      root.findElements(PARAMS_NODE).single;
 }

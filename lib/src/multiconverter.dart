@@ -6,8 +6,7 @@ import 'dart:mirrors';
 class Multiconverter {
 	final Map<Object, Function> _converters;
 
-	Multiconverter(this._converters) {
-	}
+	Multiconverter(this._converters);
 
 	Function _detectApplicableClass(ClassMirror currentClass) {
 		if (currentClass == null || currentClass.reflectedType == Object)
