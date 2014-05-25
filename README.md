@@ -1,6 +1,6 @@
 # XML-RPC library for Dart
 
-[![Build Status](https://drone.io/github.com/abarabas/dart-xmlrpc/status.png)](https://drone.io/github.com/abarabas/dart-xmlrpc/latest)
+[![Build Status](https://drone.io/github.com/o-nix/dart-xmlrpc/status.png)](https://drone.io/github.com/o-nix/dart-xmlrpc/latest)
 
 This library contains simple wrapper classes for responses and requests sent via [XML-RPC](http://en.wikipedia.org/wiki/XML-RPC) protocol.
 
