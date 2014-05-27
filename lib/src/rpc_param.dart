@@ -82,16 +82,16 @@ class RpcParam {
 		'string': (XmlElement elem) =>
 			elem.text,
 
-		List: (List list) =>
-			new XmlElement(new XmlName(ARRAY_NODE), [], [
-				new XmlElement(new XmlName(DATA_NODE), [],
-					list.map((Object item) =>
-						new XmlElement(new XmlName(VALUE_NODE), [], [RpcParam.valueToXml(item)])
-					)
-				)
-			]),
+    Iterable: (Iterable list) =>
+      new XmlElement(new XmlName(ARRAY_NODE), [], [
+        new XmlElement(new XmlName(DATA_NODE), [],
+          list.map((Object item) =>
+            new XmlElement(new XmlName(VALUE_NODE), [], [RpcParam.valueToXml(item)])
+          )
+        )
+      ]),
 
-		Map: (Map map) =>
+		{}.runtimeType: (Map map) =>
 			new XmlElement(new XmlName(STRUCT_NODE), [], map.keys.map((Object key) =>
 				new XmlElement(new XmlName(MEMBER_NODE), [], [
 					new XmlElement(new XmlName(NAME_NODE), [], [

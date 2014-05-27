@@ -50,22 +50,20 @@ main() {
 			expect(param.toString(), equals('<ISO_8601_NODE>${formatter.format(now)}</ISO_8601_NODE>'));
 		});
 
-		test('Array', () {
-			XmlElement param = RpcParam.valueToXml([5, 'hello']);
+    test('MappedArray', () {
+      XmlElement param = RpcParam.valueToXml([5, 'hello'].map((a) => a.toString()));
 
-			expect(param.toString(), equals('<array><data><value><int>5</int></value><value><string>hello</string></value></data></array>'));
-		});
+      expect(param.toString(), equals('<array><data><value><string>5</string></value><value><string>hello</string></value></data></array>'));
+    });
 
-		test('Map', () {
-			var map = new Map();
+    test('Map', () {
+      XmlElement param = RpcParam.valueToXml({
+        5: 'hello',
+        'there': 7
+      });
 
-			map[5] = 'hello';
-			map['there'] = 7;
-
-			XmlElement param = RpcParam.valueToXml(map);
-
-			expect(param.toString(), equals('<struct><member><name>5</name><value><string>hello</string></value></member><member><name>there</name><value><int>7</int></value></member></struct>'));
-		});
+      expect(param.toString(), equals('<struct><member><name>5</name><value><string>hello</string></value></member><member><name>there</name><value><int>7</int></value></member></struct>'));
+    });
 
 		test('Base64', () {
 			var str = 'Just a test';
