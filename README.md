@@ -14,8 +14,8 @@ import 'package:xmlrpc/xmlrpc.dart';
 var request = new RpcRequest();
 
 request.method = 'echo';
-request.addParam(true);
-request.addParam('an argument');
+request.params.add(true);
+request.params.add('an argument');
 
 http
     .post('http://example.com', body: request.toString())
@@ -23,7 +23,7 @@ http
         var response = new RpcResponse.fromText(httpResponse.body);
     
         print(response.isSuccess);
-        print(response.length);
+        print(response.params.length);
     });
 ```
 

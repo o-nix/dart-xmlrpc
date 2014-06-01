@@ -1,147 +1,154 @@
 part of xmlrpc;
 
+_isElement(XmlNode node) => node is XmlElement;
+
+XmlElement _firstElementChild(XmlNode node) =>
+  node.children.firstWhere(_isElement);
+
+XmlElement _parse(String xml) =>
+    parse(xml.replaceAll(new RegExp(r'>\s+<'), '><').trim()).rootElement;
+
 class RpcParam {
-	/**
-	 * The date format for the `<dateTime.iso8601 />` tag.
-	 */
-	static String DATE_FORMAT = 'yMdTHH:mm:ss';
+  /**
+   * The date format for the `<dateTime.iso8601 />` tag.
+   */
+  static String DATE_FORMAT = 'yMdTHH:mm:ss';
 
-	static final _converter = new Multiconverter({
-		int: (int value) =>
-			new XmlElement('int', elements: [new XmlText(value.toString())]),
+  static final _converter = new Multiconverter({
+    int: (int value) =>
+      new XmlElement(new XmlName('int'), [], [new XmlText(value.toString())]),
 
-		bool: (bool value) =>
-			new XmlElement('boolean', elements: [new XmlText(value.toString())]),
+    bool: (bool value) =>
+      new XmlElement(new XmlName('boolean'), [], [new XmlText(value.toString())]),
 
-		double: (double value) =>
-			new XmlElement('double', elements: [new XmlText(value.toString())]),
+    double: (double value) =>
+      new XmlElement(new XmlName('double'), [], [new XmlText(value.toString())]),
 
-		DateTime: (DateTime value) =>
-			new XmlElement(ISO_8601_NODE, elements: [new XmlText(new DateFormat(DATE_FORMAT).format(value))]),
+    DateTime: (DateTime value) =>
+      new XmlElement(new XmlName(ISO_8601_NODE), [], [new XmlText(new DateFormat(DATE_FORMAT).format(value))]),
 
-		new List<int>().runtimeType: (List<int> binaryData) =>
-			new XmlElement(BASE64_NODE, elements: [new XmlText(CryptoUtils.bytesToBase64(binaryData))]),
+    UTF8.encode('').runtimeType: (List<int> binaryData) =>
+      new XmlElement(new XmlName(BASE64_NODE), [], [new XmlText(CryptoUtils.bytesToBase64(binaryData))]),
 
-		'boolean': (XmlElement elem) =>
-			elem.text == 'true',
+    'boolean': (XmlElement elem) =>
+      elem.text == 'true',
 
-		'int': (XmlElement elem) =>
-			int.parse(elem.text),
+    'int': (XmlElement elem) =>
+      int.parse(elem.text),
 
-		'i4': (XmlElement elem) =>
-			int.parse(elem.text),
+    'i4': (XmlElement elem) =>
+      int.parse(elem.text),
 
-		'double': (XmlElement elem) =>
-			double.parse(elem.text),
+    'double': (XmlElement elem) =>
+      double.parse(elem.text),
 
-		ISO_8601_NODE: (XmlElement elem) =>
-			DateTime.parse(elem.text),
+    ISO_8601_NODE: (XmlElement elem) =>
+      DateTime.parse(elem.text),
 
-		'nil': (XmlElement elem) =>
-			null,
+    'nil': (XmlElement elem) =>
+      null,
 
-		'base64': (XmlElement elem) =>
-			CryptoUtils.base64StringToBytes(elem.text),
+    'base64': (XmlElement elem) =>
+      CryptoUtils.base64StringToBytes(elem.text),
 
-		 // <array><data><value>1</value><value>2</value></data></array>
-		'array': (XmlElement elem) {
-			var result = [];
-			XmlElement dataNode = elem.children.single;
+     // <array><data><value>1</value><value>2</value></data></array>
+    'array': (XmlElement elem) {
+      return elem.findElements('data').single.children
+          .where(_isElement)
+          .map((XmlElement elem) {
+            return fromXmlElement(elem.children.single);
+          }).toList();
+    },
 
-			dataNode.children.forEach((XmlElement elem) =>
-				result.add(fromXmlElement(elem.children.single))
-			);
+     // <struct><member><name>some</name><value><string>value</string></value></member></struct>
+    'struct': (XmlElement elem) {
+      var result = {};
 
-			return result;
-		},
+      elem.children
+        .where(_isElement)
+        .forEach((XmlElement member) {
+          var name = member.findElements(NAME_NODE).single.text;
+          XmlElement valueNode = member.findElements(VALUE_NODE).single;
 
-		 // <struct><member><name>some</name><value><string>value</string></value></member></struct>
-		'struct': (XmlElement elem) {
-			var result = {};
+          result[name] = fromXmlElement(valueNode.children.single);
+        });
 
-			elem.children.forEach((XmlElement member) {
-				var name = (member.query(NAME_NODE).single as XmlElement).text;
-				XmlElement valueNode = member.query(VALUE_NODE).single;
+      return result;
+    },
 
-				result[name] = fromXmlElement(valueNode.children.single);
-			});
+    String: (String value) =>
+      new XmlElement(new XmlName('string'), [], [new XmlText(value)]),
 
-			return result;
-		},
+    'string': (XmlElement elem) =>
+      elem.text,
 
-		String: (String value) =>
-			new XmlElement('string', elements: [new XmlText(value)]),
+    Iterable: (Iterable list) =>
+      new XmlElement(new XmlName(ARRAY_NODE), [], [
+        new XmlElement(new XmlName(DATA_NODE), [],
+          list.map((Object item) =>
+            new XmlElement(new XmlName(VALUE_NODE), [], [RpcParam.valueToXml(item)])
+          )
+        )
+      ]),
 
-		'string': (XmlElement elem) =>
-			elem.text,
+    {}.runtimeType: (Map map) =>
+      new XmlElement(new XmlName(STRUCT_NODE), [], map.keys.map((Object key) =>
+        new XmlElement(new XmlName(MEMBER_NODE), [], [
+          new XmlElement(new XmlName(NAME_NODE), [], [
+            new XmlText(key.toString())
+          ]),
+          new XmlElement(new XmlName(VALUE_NODE), [], [
+            RpcParam.valueToXml(map[key])
+          ])
+        ])
+      )),
 
-		List: (List list) =>
-			new XmlElement(ARRAY_NODE, elements: [
-				new XmlElement(DATA_NODE,
-					elements: list.map((Object item) =>
-						new XmlElement(VALUE_NODE, elements: [RpcParam.valueToXml(item)])
-					)
-				)
-			]),
+    null: (bool value) =>
+      new XmlElement(new XmlName('nil'), [], [])
+  });
 
-		Map: (Map map) =>
-			new XmlElement(STRUCT_NODE, elements: map.keys.map((Object key) =>
-				new XmlElement(MEMBER_NODE, elements: [
-					new XmlElement(NAME_NODE, elements: [
-						new XmlText(key.toString())
-					]),
-					new XmlElement(VALUE_NODE, elements: [
-						RpcParam.valueToXml(map[key])
-					])
-				])
-			)),
+  /**
+   * Returns an Object representation for a value from an XML node which wraps an XML-RPC param.
+   *
+   * The node should have a structure like:
+   *
+   *     <param>
+   *         <value>...</value>
+   *     </param>
+   */
+  static Object fromParamNode(XmlElement node) {
+    assert(node.name.local == PARAM_NODE);
 
-		null: (bool value) =>
-			new XmlElement('nil')
-	});
+    XmlElement valueNodeElem = _firstElementChild(node);
 
-	/**
-	 * Returns an Object representation for a value from an XML node which wraps an XML-RPC param.
-	 *
-	 * The node should have a structure like:
-	 *
-	 *     <param>
-	 *         <value>...</value>
-	 *     </param>
-	 */
-	static Object fromParamNode(XmlElement node) {
-		assert(node.name == 'param');
+    assert(valueNodeElem.name.local == VALUE_NODE);
 
-		XmlElement valueNodeElem = node.children.single;
+    return fromXmlElement(_firstElementChild(valueNodeElem));
+  }
 
-		assert(valueNodeElem.name == 'value');
+  /**
+   * Returns an Object representation for a value from an XML node.
+   *
+   * The node should have a structure like:
+   *
+   *     <int>...</int>
+   */
+  static Object fromXmlElement(XmlElement node) {
+    Function converter = _converter.getConverter(node.name.local);
 
-		return fromXmlElement(valueNodeElem.children.single);
-	}
+    assert(converter != null);
 
-	/**
-	 * Returns an Object representation for a value from an XML node.
-	 *
-	 * The node should have a structure like:
-	 *
-	 *     <int>...</int>
-	 */
-	static Object fromXmlElement(XmlElement node) {
-		Function converter = _converter.getConverter(node.name);
+    return converter(node);
+  }
 
-		assert(converter != null);
+  /**
+   * Returns an XML node which wraps all the nodes generated for the value.
+   */
+  static XmlElement valueToXml(Object value) {
+    Function converter = _converter.getConverter(value);
 
-		return converter(node);
-	}
+    assert(converter != null);
 
-	/**
-	 * Returns an XML node which wraps all the nodes generated for the value.
-	 */
-	static XmlElement valueToXml(Object value) {
-		Function converter = _converter.getConverter(value);
-
-		assert(converter != null);
-
-		return converter(value);
-	}
+    return converter(value);
+  }
 }

@@ -6,8 +6,8 @@ import 'unit/rpc_response_test.dart' as rpc_response_test;
 import 'integration/flickr_test.dart' as flickr_test;
 
 void main() {
-	rpc_param_test.main();
-	rpc_request_test.main();
-	rpc_response_test.main();
-	flickr_test.main();
+  rpc_param_test.main();
+  rpc_request_test.main();
+  rpc_response_test.main();
+  flickr_test.main();
 }
