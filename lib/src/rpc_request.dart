@@ -77,9 +77,6 @@ class RpcRequest {
     ]).toString();
   }
 
-  static String _toStringInternal(String original) =>
-      original.replaceAll('\r', '\n');
-
   static XmlElement _getMethodNode(XmlElement root) =>
       root.findElements(METHOD_NAME_NODE).single;
 
