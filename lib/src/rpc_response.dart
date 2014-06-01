@@ -5,49 +5,49 @@ part of xmlrpc;
  * See [RpcRequest] for the detailed description of parameter's types.
  */
 class RpcResponse {
-	/**
-	 * The main state of the request.
-	 */
-	bool isSuccess;
+  /**
+   * The main state of the request.
+   */
+  bool isSuccess;
 
-	List params = [];
+  List params = [];
 
-	/**
-	 * Creates new response from scratch.
-	 * Use [successful] flag for the initial state of the request.
-	 */
-	RpcResponse([this.isSuccess=true]);
+  /**
+   * Creates new response from scratch.
+   * Use [successful] flag for the initial state of the request.
+   */
+  RpcResponse([this.isSuccess=true]);
 
-	factory RpcResponse.fault(int faultCode, String faultString) {
-	  new RpcResponse(false)
-	     ..params.add({
-    	    faultCode: faultCode,
-    	    faultString: faultString
-    	  });
-	}
+  factory RpcResponse.fault(int faultCode, String faultString) {
+    new RpcResponse(false)
+       ..params.add({
+          faultCode: faultCode,
+          faultString: faultString
+        });
+  }
 
-	/**
-	 * Parses an external response from text.
-	 */
-	factory RpcResponse.fromXmlString(String body) {
-		var resultNode = _parse(body).children.single;
+  /**
+   * Parses an external response from text.
+   */
+  factory RpcResponse.fromXmlString(String body) {
+    var resultNode = _parse(body).children.single;
     var res = new RpcResponse(resultNode.name.local != FAULT_NODE);
 
-		if (res.isSuccess) {
-			res.params.addAll(resultNode.children.map(RpcParam.fromParamNode));
-		}
-		else {
-			XmlElement valueNode = resultNode.children.single;
-			XmlElement typeNode = valueNode.children.single;
+    if (res.isSuccess) {
+      res.params.addAll(resultNode.children.map(RpcParam.fromParamNode));
+    }
+    else {
+      XmlElement valueNode = resultNode.children.single;
+      XmlElement typeNode = valueNode.children.single;
 
-			res.params.add(RpcParam.fromXmlElement(typeNode));
-		}
-		return res;
-	}
+      res.params.add(RpcParam.fromXmlElement(typeNode));
+    }
+    return res;
+  }
 
-	@override
-	String toString() {
-	  List<XmlElement> content = [];
+  @override
+  String toString() {
+    List<XmlElement> content = [];
 
     if (!isSuccess) {
       assert(params.length < 2);
@@ -71,9 +71,9 @@ class RpcResponse {
       );
     }
 
-	  return new XmlDocument([
+    return new XmlDocument([
       new XmlProcessing('xml', XML_HEADER),
       new XmlElement(new XmlName('methodResponse'), [], content)
     ]).toString();
-	}
+  }
 }

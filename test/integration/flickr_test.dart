@@ -7,17 +7,16 @@ import 'package:unittest/unittest.dart';
 const String URL = 'http://api.flickr.com/services/xmlrpc';
 
 void main() {
-	test('Flickr echo', () {
-		var req = new RpcRequest('flickr.panda.getList', [{
-			'api_key': 'b7c10f5f6087e1d11478718bffdd5e19'
-	  }]);
+  test('Flickr echo', () {
+    var req = new RpcRequest('flickr.panda.getList', [{
+      'api_key': 'b7c10f5f6087e1d11478718bffdd5e19'
+    }]);
 
-		http.post(URL, body: req.toString()).then((resp) {
-			var rpcResp = new RpcResponse.fromXmlString(resp.body);
+    http.post(URL, body: req.toString()).then((resp) {
+      var rpcResp = new RpcResponse.fromXmlString(resp.body);
 
-			expect(rpcResp.isSuccess, isTrue);
-			expect(rpcResp, hasLength(1));
-		});
-	});
+      expect(rpcResp.isSuccess, isTrue);
+      expect(rpcResp, hasLength(1));
+    });
+  });
 }
-
